@@ -13,11 +13,11 @@
  *
  */
 
+namespace EBP_Deliver;
+
 define( 'EBP_DELIVERY_PATH', plugin_dir_path( __FILE__ ) );
 define( 'EBP_DELIVERY_URL', plugin_dir_url( __FILE__ ) );
 define( 'EBP_DELIVERY_VERSION', '1.0.0' );
-
-namespace EBP_Deliver;
 
 class Plugin {
 
@@ -27,6 +27,33 @@ class Plugin {
 
   }
 
+  public static function activation() {
+
+    require_once( EBP_DELIVERY_PATH . 'src/Activation.php' );
+    $act = new Activation();
+    $act->makeDashboardPage();
+
+  }
+
+  public static function deactivation() {
+
+    require_once( EBP_DELIVERY_PATH . 'src/Deactivation.php' );
+    $dec = new Deactivation();
+    $dec->removeDashboardPage();
+
+  }
+
 }
 
 new Plugin();
+
+
+/*
+ * Activation Hook
+ */
+register_activation_hook( __FILE__, '\EBP_Deliver\Plugin::activation', 10 );
+
+/*
+ * Deactivation Hook
+ */
+register_deactivation_hook( __FILE__, '\EBP_Deliver\Plugin::deactivation', 10 );
